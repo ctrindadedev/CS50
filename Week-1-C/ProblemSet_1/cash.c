@@ -1,47 +1,51 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-int gorjeta(int valor){
-    
-}
-
-int main(int argc, char const *argv[])
+int main()
 {
+    int coins = 0;
     // Prompt the user for change owed, in cents
-    int owe, quarter, dime, nickel, cent;
-    printf("Change owed: ");
-    scanf("%d", &owe);
+    int change_owed = 113;
+
+    if (change_owed <= 0)
+    {
+        printf("Não terá troco!\n");
+        return 0;
+    }
 
     // Calculate how many quarters you should give customer
-    while (owe % 25 == 0)
+    while (change_owed >= 25)
     {
-       
-        /* code */
+        coins++;
+        // Subtract the value of those quarters from cents
+        change_owed = change_owed - 25;
     }
-    
-    // Subtract the value of those quarters from cents
 
     // Calculate how many dimes you should give customer
-    // Subtract the value of those dimes from remaining cents
+    while (change_owed >= 10)
+    {
+        coins++;
+        // Subtract the value of those dimes from cents
+        change_owed = change_owed - 10;
+    }
 
     // Calculate how many nickels you should give customer
-    // Subtract the value of those nickels from remaining cents
+    while (change_owed >= 5)
+    {
+        coins++;
+        // Subtract the value of those nickels from cents
+        change_owed = change_owed - 5;
+    }
 
     // Calculate how many pennies you should give customer
-    // Subtract the value of those pennies from remaining cents
-
-    // Sum the number of quarters, dimes, nickels, and pennies used
-    // Print that sum
-
-    for (i = 0; i < count; i++)
+    while (change_owed >= 1)
     {
-        /* code */
+        coins++;
+        // Subtract the value of those pennies from cents
+        change_owed = change_owed - 1;
     }
-     (%25 = 0)
-    {
-       
-    }
-    
-    
+
+    // Print total coins
+    printf("%d\n", coins);
+
     return 0;
 }
