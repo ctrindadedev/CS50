@@ -2,60 +2,75 @@
 #include <ctype.h>
 #include <string.h>
 #include <math.h>
-int main(void)
+
+int count_letters(char text[])
 {
-    // Prompt user
-    char *text[1000];
-    printf("Text: ");
-    scanf("%s", text);
-
-    // String length
-    int i = strlen(text);
-    int letters = 0;
-    int words = 0;
-    int sentences = 0;
-
-    // Loop for counting
-    for (int x = 0; x < i; x++)
+    int count = 0;
+    for (int i = 0; text[i] != '\0'; i++)
     {
-        // Counting letters
-        char c = text[x];
-        if (isalpha(c) != 0)
+        if (isalpha(text[i]))
         {
-            letters++;
-        }
-
-        // Counting words
-        if (c == ' ')
-        {
-            words++;
-        }
-
-        // Counting Sentences
-        if (c == '.' || c == '!' || c == '?')
-        {
-            sentences++;
+            count++;
         }
     }
+    return count;
+}
 
-    // To account for last word
-    words = words + 1;
-
-    // Calculation
-    float L = ((float)letters / (float)words) * 100;
-    float s = ((float)sentences / (float)words) * 100;
-    float subindex = 0.0588 * L - 0.296 * s - 15.8;
-    int index = round(subindex);
-    if (index > 16)
+int count_words(char text[])
+{
+    int count = 1; // Começamos com 1 porque há sempre uma palavra a mais que os espaços
+    for (int i = 0; text[i] != '\0'; i++)
     {
-        printf("Grade 16+\n");
+        if (text[i] == ' ')
+        {
+            count++;
+        }
     }
-    else if (index < 1)
+    return count;
+}
+
+int count_sentences(char text[])
+{
+    int count = 0;
+    for (int i = 0; text[i] != '\0'; i++)
     {
-        printf("Before Grade 1\n");
+        if (text[i] == '.' || text[i] == '!' || text[i] == '?')
+        {
+            count++;
+        }
+    }
+    return count;
+}
+
+int main()
+{
+    char text[1000];
+
+    printf("Digite um texto:\n");
+    fgets(text, sizeof(text), stdin);
+
+    int letters = count_letters(text);
+    int words = count_words(text);
+    int sentences = count_sentences(text);
+
+    float L = ((float)letters / words) * 100;
+    float S = ((float)sentences / words) * 100;
+    int index = round(0.0588 * L - 0.296 * S - 15.8);
+
+    printf("O índice de legibilidade é: %d\n", index);
+
+    if (index < 1)
+    {
+        printf("Classificação: Before Grade 1\n");
+    }
+    else if (index >= 16)
+    {
+        printf("Classificação: Grade 16+\n");
     }
     else
     {
-        printf("Grade %i\n", index);
+        printf("Classificação: Grade %d\n", index);
     }
+
+    return 0;
 }
