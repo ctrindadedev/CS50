@@ -1,77 +1,115 @@
-#include <cs50.h>
 #include <stdio.h>
 #include <string.h>
 
-// Max number of candidates
 #define MAX 9
 
-// Candidates have name and vote count
+// Struct para armazenar candidatos - candidates have name and votess
 typedef struct
 {
-    string name;
+    char name[50];
     int votes;
 } candidate;
 
-// Array of candidates
+// Array para armazenar candidatos
+
 candidate candidates[MAX];
+int candidate_count = 0;
 
-// Number of candidates
-int candidate_count;
-
-// Function prototypes
-bool vote(string name);
+// Protótipos das funções à serem desenvolvidas
+void candidatoCreator(int count, char *names[]);
+int votar(char *name);
 void print_winner(void);
 
-int main(int argc, string argv[])
+int main(int argc, char *argv[])
 {
-    // Check for invalid usage
+    // Verifica se há candidatos suficientes
     if (argc < 2)
     {
-        printf("Usage: plurality [candidate ...]\n");
+        printf("Uso: plurality [candidato ...]\n");
         return 1;
     }
 
-    // Populate array of candidates
-    candidate_count = argc - 1;
-    if (candidate_count > MAX)
-    {
-        printf("Maximum number of candidates is %i\n", MAX);
-        return 2;
-    }
-    for (int i = 0; i < candidate_count; i++)
-    {
-        candidates[i].name = argv[i + 1];
-        candidates[i].votes = 0;
-    }
+    candidatoCreator(argc - 1, argv + 1);
 
-    int voter_count = get_int("Number of voters: ");
+    int voter_count;
+    printf("Número de eleitores: ");
+    scanf("%d", &voter_count);
 
-    // Loop over all voters
+    // Registrar os votos
     for (int i = 0; i < voter_count; i++)
     {
-        string name = get_string("Vote: ");
+        char name[50];
+        printf("Voto: ");
+        scanf("%s", name);
 
-        // Check for invalid vote
-        if (!vote(name))
+        if (!votar(name))
         {
-            printf("Invalid vote.\n");
+            printf("Voto inválido!\n");
+        }
+    }
+    print_winner();
+
+    return 0;
+}
+
+// Função para criar candidatos
+void candidatoCreator(int count, char *names[])
+{
+    if (count > MAX)
+    {
+        printf("Número máximo de candidatos excedido!\n");
+        return;
+    }
+
+    for (int i = 0; i < count; i++)
+    {
+        strcpy(candidates[i].name, names[i]);
+        candidates[i].votes = 0;
+    }
+    candidate_count = count;
+}
+
+// Função para registrar votos
+int votar(char *name)
+{
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (strcmp(candidates[i].name, name) == 0)
+        {
+            candidates[i].votes++;
+            // Voto válido/true
+            return 1;
+        }
+    }
+    // Voto inválido/false
+    return 0;
+}
+
+// Função para exibir o vencedor
+void print_winner(void)
+{
+    int maior = 0;
+    char vencedores[MAX][50];
+    int count = 0;
+
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (candidates[i].votes > maior)
+        {
+            maior = candidates[i].votes;
+            count = 0;
+            strcpy(vencedores[count++], candidates[i].name);
+        }
+        else if (candidates[i].votes == maior)
+        {
+            strcpy(vencedores[count++], candidates[i].name);
         }
     }
 
-    // Display winner of election
-    print_winner();
-}
-
-// Update vote totals given a new vote
-bool vote(string name)
-{
-    // TODO
-    return false;
-}
-
-// Print the winner (or winners) of the election
-void print_winner(void)
-{
-    // TODO
-    return;
+    printf("Vencedor(es): ");
+    for (int i = 0; i < count; i++)
+    {
+        printf("%s ", vencedores[i]);
+    }
+    printf("\n");
 }
