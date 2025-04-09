@@ -1,0 +1,15 @@
+sort1 uses: Bubble Sort
+
+How do you know?: 
+
+sort2 uses: Merge Sort
+
+How do you know?: It's efficient in all the datasets.
+
+sort3 uses: Selection Sort
+
+How do you know?: It is the worst for larger datasets (50000) and it's the best for the small cases (5000)
+
+- Selection sort iterates through the unsorted portions of a list, selecting the smallest element each time and moving it to its correct location. - O(n²)
+- Bubble sort compares pairs of adjacent values one at a time and swaps them if they are in the incorrect order. This continues until the list is sorted. - O(n²)
+- Merge sort recursively divides the list into two repeatedly and then merges the smaller lists back into a larger one in the correct order. - O (n log n)
