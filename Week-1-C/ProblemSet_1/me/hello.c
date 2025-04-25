@@ -6,7 +6,7 @@ int main(int argc, char const *argv[])
 {
     char *name[40];
     printf("What's your name? ");
-    sscanf("%s", &name);
-    printf("Hello %s", name);
+    scanf("%s", &name);
+    printf("Hello %s \n", name);
     return 0;
 }
