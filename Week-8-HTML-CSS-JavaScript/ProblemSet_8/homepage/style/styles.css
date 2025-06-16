@@ -1,0 +1,28 @@
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #f4f4f9;
+}
+
+.container {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.card {
+  border: none;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+#form-response {
+    color: green;
+    font-weight: bold;
+}
