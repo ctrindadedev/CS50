@@ -274,4 +274,40 @@ def sell():
 
     else:
         return render_template("sell.html", stocks=stocks)
+    
+@app.route("/password_change", methods=["GET", "POST"])
+@login_required
+def password_change():
+    """Allow user to change password"""
+    if request.method == "POST":
+        current_password = request.form.get("current_password")
+        new_password = request.form.get("new_password")
+        confirmation = request.form.get("confirmation")
+        user_id = session["user_id"]
+
+        if not current_password or not new_password or not confirmation:
+            return apology("must provide all fields", 400)
+
+        # Query database for current user hash
+        rows = db.execute("SELECT hash FROM users WHERE id = ?", user_id)
+
+    #Verify passwords
+        if not check_password_hash(rows[0]["hash"], current_password):
+            return apology("invalid current password", 403)
+
+       
+        if new_password != confirmation:
+            return apology("new passwords do not match", 400)
+
+        new_hash = generate_password_hash(new_password)
+
+        db.execute("UPDATE users SET hash = ? WHERE id = ?", new_hash, user_id)
+
+        flash("Password changed successfully")
+        return redirect("/")
+
+    else:
+        return render_template("password_change.html")
+
+
 
